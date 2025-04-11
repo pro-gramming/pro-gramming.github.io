@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Fade in the new card
         requestAnimationFrame(() => {
-            newCard.style.opacity = '0.6';
+            newCard.style.opacity = direction === 'next' ? '0.6' : '0.6';
         });
 
         // Reset transition lock after animation completes
@@ -341,25 +341,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Populate experience
-    const experienceTimeline = document.getElementById('experience-timeline');
-    config.experience.forEach(exp => {
-        const expItem = document.createElement('div');
-        expItem.className = 'experience-item';
-        expItem.innerHTML = `
-            <div class="experience-header">
-                <div class="experience-title">${exp.role}</div>
-                <div class="experience-company">${exp.company}</div>
-                <div class="experience-period">${exp.period}</div>
-                <div class="experience-location">${exp.location}</div>
-            </div>
-            <ul class="experience-achievements">
-                ${exp.achievements.map(achievement => `<li>${achievement}</li>`).join('')}
-            </ul>
-        `;
-        experienceTimeline.appendChild(expItem);
-    });
-
     // Populate projects
     const projectGrid = document.getElementById('project-grid');
     config.projects.forEach(project => {
@@ -380,6 +361,35 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         projectGrid.appendChild(projectCard);
+    });
+
+    // Observe sections for animation
+    document.querySelectorAll('section').forEach(section => {
+        createObserver([section]);
+        
+        // Observe grid containers within sections
+        const grids = section.querySelectorAll('.skills-grid, .certifications-grid, .project-grid');
+        if (grids.length) {
+            grids.forEach(grid => {
+                createObserver([grid]);
+            });
+        }
+        
+        // Observe individual items
+        const items = section.querySelectorAll('.skill-card, .certification-card, .project-card');
+        if (items.length) {
+            createObserver(Array.from(items));
+        }
+    });
+
+    // Remove skills and certifications sections from animation system
+    ['skills', 'certifications'].forEach(sectionId => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.classList.add('no-animate');
+            const observer = new IntersectionObserver(() => {}, { threshold: 0.1 });
+            observer.observe(section);
+        }
     });
 });
 
@@ -427,30 +437,6 @@ const createObserver = (elements, className = 'animate') => {
     elements.forEach(element => observer.observe(element));
 };
 
-// Initialize animations
-document.addEventListener('DOMContentLoaded', () => {
-    // ... existing configuration code ...
-
-    // Observe sections for animation
-    document.querySelectorAll('section').forEach(section => {
-        createObserver([section]);
-        
-        // Observe grid containers within sections
-        const grids = section.querySelectorAll('.skills-grid, .certifications-grid, .project-grid, .experience-timeline');
-        if (grids.length) {
-            grids.forEach(grid => {
-                createObserver([grid]);
-            });
-        }
-        
-        // Observe individual items
-        const items = section.querySelectorAll('.skill-card, .certification-card, .project-card, .experience-item');
-        if (items.length) {
-            createObserver(Array.from(items));
-        }
-    });
-});
-
 // Enhanced scroll-based navbar
 const navbar = document.querySelector('.navbar');
 let lastScrollTop = 0;
@@ -480,9 +466,9 @@ window.addEventListener('scroll', () => {
 // Add smooth transition to navbar
 navbar.style.transition = 'all 0.3s ease';
 
-// Mobile menu toggle
+// Mobile menu functionality
 const mobileMenuButton = document.createElement('button');
-mobileMenuButton.classList.add('mobile-menu-button');
+mobileMenuButton.className = 'mobile-menu-button';
 mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
 document.querySelector('.navbar').appendChild(mobileMenuButton);
 

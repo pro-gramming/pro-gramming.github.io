@@ -544,69 +544,6 @@ footer {
     transform: translate(20%, -50%) translateZ(-100px) rotateY(-35deg) !important;
 }
 
-/* Experience Section */
-.experience-timeline {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.experience-item {
-    position: relative;
-    padding: 2rem;
-    background: white;
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
-}
-
-.experience-item:last-child {
-    margin-bottom: 0;
-}
-
-.experience-header {
-    margin-bottom: 1rem;
-}
-
-.experience-title {
-    font-size: 1.5rem;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.experience-company {
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.experience-period {
-    color: var(--light-text);
-    font-size: 0.9rem;
-}
-
-.experience-location {
-    color: var(--light-text);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.experience-achievements {
-    list-style-type: none;
-}
-
-.experience-achievements li {
-    position: relative;
-    padding-left: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.experience-achievements li:before {
-    content: "•";
-    color: var(--primary-color);
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
 /* Animations */
 @keyframes fadeInUp {
     0% {
@@ -630,9 +567,8 @@ footer {
     }
 }
 
-/* Initial state for animated elements - REMOVE SKILL CARDS */
+/* Initial state for animated elements */
 .certification-card,
-.experience-item,
 .project-card {
     opacity: 0;
     transform: translateY(30px);
@@ -663,8 +599,7 @@ footer {
 /* Hover effects */
 .skill-card:hover,
 .certification-card:hover,
-.project-card:hover,
-.experience-item:hover {
+.project-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
@@ -707,28 +642,7 @@ section.animate h2 {
     animation: fadeInUp 0.6s ease forwards;
 }
 
-/* Remove all animation delays and overrides for skills */
-.skills-grid .skill-card.animate,
-.skills-grid .skill-card.animate:nth-child(1),
-.skills-grid .skill-card.animate:nth-child(2),
-.skills-grid .skill-card.animate:nth-child(3),
-.skills-grid .skill-card.animate:nth-child(4),
-.skills-grid .skill-card.animate:nth-child(5),
-.skills-grid .skill-card.animate:nth-child(6) {
-    animation: none;
-    animation-delay: 0s;
-    opacity: 1;
-}
-
-.skills.no-animate,
-.skills.no-animate *,
-.skills-grid.no-animate,
-.skills-grid.no-animate * {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-}
-
+/* Skills grid animations and transforms */
 .skills-grid .skill-card {
     transform: translate(-50%, -50%) !important;
 }
@@ -755,8 +669,25 @@ section.animate h2 {
 }
 
 /* Remove all animation overrides */
+.skills.no-animate,
+.skills.no-animate *,
+.skills-grid.no-animate,
+.skills-grid.no-animate * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
 .skills.no-animate .skill-card,
 .skills-grid.no-animate .skill-card {
     animation: none !important;
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-} 
+}
+
+/* Initial state for animated elements */
+.skill-card,
+.certification-card,
+.project-card {
+    opacity: 0;
+    transform: translateY(30px);
+}
