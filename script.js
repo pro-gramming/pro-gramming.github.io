@@ -12,17 +12,186 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('email-link').href = `mailto:${config.contact.email}`;
     document.getElementById('email-link').textContent = config.contact.email;
 
-    // Populate skills
+    // Populate skills with cover flow effect
     const skillsGrid = document.getElementById('skills-grid');
-    config.skills.forEach(skill => {
-        const skillCard = document.createElement('div');
-        skillCard.className = 'skill-card';
-        skillCard.innerHTML = `
+    let currentIndex = 0;
+    const skills = config.skills;
+    let isTransitioning = false;
+
+    function updateSkillsDisplay(direction = 'next') {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        const totalSkills = skills.length;
+        const existingCards = Array.from(skillsGrid.children);
+        
+        // First, update classes on existing cards based on direction
+        existingCards.forEach(card => {
+            const currentClass = Array.from(card.classList).find(cls => 
+                ['center', 'left', 'right', 'far-left', 'far-right'].includes(cls)
+            );
+            
+            if (currentClass) {
+                card.classList.remove(currentClass);
+                let newClass;
+                
+                if (direction === 'next') {
+                    switch (currentClass) {
+                        case 'far-left': card.remove(); return;
+                        case 'left': newClass = 'far-left'; break;
+                        case 'center': newClass = 'left'; break;
+                        case 'right': newClass = 'center'; break;
+                        case 'far-right': newClass = 'right'; break;
+                    }
+                } else {
+                    switch (currentClass) {
+                        case 'far-right': card.remove(); return;
+                        case 'right': newClass = 'far-right'; break;
+                        case 'center': newClass = 'right'; break;
+                        case 'left': newClass = 'center'; break;
+                        case 'far-left': newClass = 'left'; break;
+                    }
+                }
+                
+                if (newClass) {
+                    card.classList.add(newClass);
+                }
+            }
+        });
+
+        // Add new card
+        const newCard = document.createElement('div');
+        newCard.className = 'skill-card';
+        
+        let newIndex;
+        if (direction === 'next') {
+            newIndex = (currentIndex + 2 + totalSkills) % totalSkills;
+            newCard.classList.add('far-right');
+        } else {
+            newIndex = (currentIndex - 2 + totalSkills) % totalSkills;
+            newCard.classList.add('far-left');
+        }
+        
+        const skill = skills[newIndex];
+        newCard.innerHTML = `
             <i class="${skill.icon}"></i>
             <h3>${skill.name}</h3>
         `;
-        skillsGrid.appendChild(skillCard);
+        
+        // Initially set opacity to 0
+        newCard.style.opacity = '0';
+        skillsGrid.appendChild(newCard);
+        
+        // Force reflow
+        newCard.offsetHeight;
+        
+        // Fade in the new card
+        requestAnimationFrame(() => {
+            newCard.style.opacity = '0.6';
+        });
+
+        // Reset transition lock after animation completes
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 800);
+    }
+
+    // Initialize skills display
+    function initializeSkillsDisplay() {
+        skillsGrid.innerHTML = '';
+        const totalSkills = skills.length;
+        
+        // Create initial set of cards
+        for (let i = -2; i <= 2; i++) {
+            const skillIndex = (currentIndex + i + totalSkills) % totalSkills;
+            const skill = skills[skillIndex];
+            
+            const skillCard = document.createElement('div');
+            skillCard.className = 'skill-card';
+            
+            if (i === 0) skillCard.classList.add('center');
+            else if (i === -1) skillCard.classList.add('left');
+            else if (i === 1) skillCard.classList.add('right');
+            else if (i === -2) skillCard.classList.add('far-left');
+            else if (i === 2) skillCard.classList.add('far-right');
+            
+            skillCard.innerHTML = `
+                <i class="${skill.icon}"></i>
+                <h3>${skill.name}</h3>
+            `;
+            
+            skillsGrid.appendChild(skillCard);
+        }
+    }
+
+    // Initialize the display
+    initializeSkillsDisplay();
+
+    // Completely remove the skills section from the animation system
+    const skillsSection = document.getElementById('skills');
+    if (skillsSection) {
+        skillsSection.classList.add('no-animate');
+        const observer = new IntersectionObserver(() => {}, { threshold: 0.1 });
+        observer.observe(skillsSection);
+    }
+
+    // Add navigation event listeners
+    document.getElementById('prev-skill').addEventListener('click', () => {
+        if (!isTransitioning) {
+            currentIndex = (currentIndex - 1 + skills.length) % skills.length;
+            updateSkillsDisplay('prev');
+        }
     });
+
+    document.getElementById('next-skill').addEventListener('click', () => {
+        if (!isTransitioning) {
+            currentIndex = (currentIndex + 1 + skills.length) % skills.length;
+            updateSkillsDisplay('next');
+        }
+    });
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (!isTransitioning) {
+            if (e.key === 'ArrowLeft') {
+                currentIndex = (currentIndex - 1 + skills.length) % skills.length;
+                updateSkillsDisplay('prev');
+            } else if (e.key === 'ArrowRight') {
+                currentIndex = (currentIndex + 1 + skills.length) % skills.length;
+                updateSkillsDisplay('next');
+            }
+        }
+    });
+
+    // Add touch/swipe support with smooth transitions
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    skillsGrid.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    skillsGrid.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > swipeThreshold && !isTransitioning) {
+            if (diff > 0) {
+                // Swipe left - go next
+                currentIndex = (currentIndex + 1 + skills.length) % skills.length;
+                updateSkillsDisplay('next');
+            } else {
+                // Swipe right - go previous
+                currentIndex = (currentIndex - 1 + skills.length) % skills.length;
+                updateSkillsDisplay('prev');
+            }
+        }
+    }
 
     // Populate certifications
     const certificationsGrid = document.getElementById('certifications-grid');
