@@ -15,10 +15,23 @@
     --transition: all 0.3s ease;
 }
 
+:root[data-theme="dark"] {
+    --primary-color: #60a5fa;
+    --secondary-color: #3b82f6;
+    --text-color: #f3f4f6;
+    --light-text: #d1d5db;
+    --background: #111827;
+    --section-bg: #1f2937;
+    --card-bg: #1f2937;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     line-height: 1.6;
     color: var(--text-color);
+    background-color: var(--background);
+    transition: var(--transition);
 }
 
 /* Navigation */
@@ -26,18 +39,30 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    background: var(--background);
+    background: rgba(255, 255, 255, 0.95);
     padding: 1rem 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    transition: var(--transition);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+[data-theme="dark"] .navbar {
+    background: rgba(31, 41, 55, 0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .nav-brand {
     font-size: 1.5rem;
     font-weight: 700;
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .nav-brand {
     color: var(--primary-color);
 }
 
@@ -54,6 +79,10 @@ body {
     transition: var(--transition);
 }
 
+[data-theme="dark"] .nav-menu a {
+    color: var(--light-text);
+}
+
 .nav-menu a:hover {
     color: var(--primary-color);
 }
@@ -66,7 +95,7 @@ body {
     justify-content: center;
     text-align: center;
     padding: 0 5%;
-    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    background: linear-gradient(rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.9)),
                 url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
     background-size: cover;
     background-position: center;
@@ -167,11 +196,11 @@ h2 {
     position: absolute;
     left: 50%;
     top: 50%;
-    background: white;
+    background: var(--background);
     padding: 2rem;
     border-radius: 1rem;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
     min-width: 280px;
     transform-origin: center center;
     backface-visibility: hidden;
@@ -266,10 +295,10 @@ h2 {
 }
 
 .project-card {
-    background: white;
+    background: var(--background);
     border-radius: 1rem;
     padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
     transition: var(--transition);
     text-align: center;
 }
@@ -309,7 +338,7 @@ h2 {
 }
 
 .project-technology {
-    background: var(--section-bg);
+    background: var(--card-bg);
     color: var(--primary-color);
     padding: 0.25rem 0.75rem;
     border-radius: 1rem;
@@ -355,24 +384,32 @@ h2 {
     color: var(--text-color);
     text-decoration: none;
     transition: var(--transition);
+    font-weight: 500;
 }
 
 .contact-item a:hover {
     color: var(--primary-color);
+    transform: translateY(-2px);
 }
 
 /* Footer */
 footer {
     text-align: center;
     padding: 2rem;
-    background: var(--text-color);
+    background: var(--card-bg);
+    color: var(--text-color);
+}
+
+[data-theme="dark"] footer {
     color: white;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav-menu {
-        display: none;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
     }
 
     .hero-content h1 {
@@ -381,6 +418,12 @@ footer {
 
     section {
         padding: 3rem 5%;
+    }
+
+    [data-theme="dark"] .nav-menu {
+        background: rgba(31, 41, 55, 0.95);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
     }
 }
 
@@ -410,11 +453,11 @@ footer {
     position: absolute;
     left: 50%;
     top: 50%;
-    background: white;
+    background: var(--background);
     padding: 2rem;
     border-radius: 1rem;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
     width: 280px;
     height: 180px;
     transform-origin: center center;
@@ -724,11 +767,11 @@ section h2 {
     position: absolute;
     left: 50%;
     top: 50%;
-    background: white;
+    background: var(--background);
     padding: 2rem;
     border-radius: 1rem;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
     min-width: 280px;
     transform-origin: center center;
     backface-visibility: hidden;
@@ -795,7 +838,7 @@ section h2 {
 }
 
 .highlight-card .project-technology {
-    background: var(--section-bg);
+    background: var(--card-bg);
     color: var(--primary-color);
     padding: 0.25rem 0.75rem;
     border-radius: 1rem;
@@ -884,4 +927,70 @@ section h2 {
 
 .highlights-grid .highlight-card.far-right {
     transform: translate(20%, -50%) translateZ(-100px) rotateY(-35deg) !important;
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.dark-mode-toggle:hover {
+    color: var(--primary-color);
+    transform: rotate(15deg);
+}
+
+/* Mobile menu dark mode styles */
+[data-theme="dark"] .nav-menu {
+    background: rgba(31, 41, 55, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+[data-theme="dark"] .skill-card,
+[data-theme="dark"] .highlight-card,
+[data-theme="dark"] .project-card {
+    background: #2d3748;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .skill-card.center {
+    background: #374151;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .skill-card.left,
+[data-theme="dark"] .skill-card.right {
+    opacity: 0.9;
+}
+
+[data-theme="dark"] .skill-card.far-left,
+[data-theme="dark"] .skill-card.far-right {
+    opacity: 0.8;
+}
+
+[data-theme="dark"] .skill-card h3 {
+    color: #f3f4f6;
+}
+
+[data-theme="dark"] .skill-card i {
+    color: #60a5fa;
+}
+
+[data-theme="dark"] section:nth-child(even) {
+    background: #1f2937;
+}
+
+[data-theme="dark"] footer {
+    background: var(--card-bg);
+}
+
+[data-theme="light"] .hero {
+    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+                url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
 }
