@@ -2,7 +2,18 @@ const config = {
     name: "Dinesh",
     title: "DevOps Engineer",
     tagline: "DevOps Engineer | Infrastructure Specialist | Cloud Expert",
-    about: `Highly skilled DevOps Engineer with over 3 years of experience in automating, deploying, and maintaining infrastructure. Proven track record of improving efficiency and reducing downtime through implementing best practices and utilizing cutting-edge technologies. Seeking to leverage my expertise to drive innovation and streamline processes in a dynamic and collaborative environment.`,
+    about: {
+        intro: "I'm a DevOps Engineer with 4+ years of hands-on experience in",
+        specialties: [
+            "Building, automating, and optimizing cloud infrastructure",
+            "Streamlining CI/CD pipelines",
+            "Minimizing system downtime",
+            "Designing scalable, cost-efficient environments across platforms like Azure and Kubernetes"
+        ],
+        passion: "Passionate about clean automation and reliable systems, I thrive at the intersection of development and operations — turning complex infrastructure challenges into efficient, repeatable solutions.",
+        focus: "Whether it's building sandbox platforms, enforcing policy as code, or supporting production labs, I love solving real problems that empower teams to move faster and safer.",
+        motto: "Always learning. Always simplifying."
+    },
     
     contact: {
         email: "dineshps8527@gmail.com",

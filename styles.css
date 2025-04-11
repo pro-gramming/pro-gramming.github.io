@@ -240,12 +240,102 @@ h2 {
 .about-content {
     max-width: 800px;
     margin: 0 auto;
+    padding: 2rem;
 }
 
-.about-text p {
-    margin-bottom: 1.5rem;
+.about-text {
+    background: var(--background);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+}
+
+.about-intro {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.about-specialties {
+    list-style: none;
+    margin: 2rem 0;
+    padding: 0;
+}
+
+.about-specialties li {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--text-color);
     font-size: 1.1rem;
+}
+
+.about-specialties li i {
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    top: 0.4rem;
+}
+
+.about-passion, .about-focus {
+    color: var(--text-color);
+    margin: 1.5rem 0;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.about-motto {
+    text-align: center;
+    color: var(--primary-color);
+    font-style: italic;
+    font-size: 1.2rem;
+    margin: 2rem 0 1rem;
+    padding: 1rem;
+    border-top: 1px solid var(--light-text);
+    border-bottom: 1px solid var(--light-text);
+}
+
+.about-motto i {
     color: var(--light-text);
+    font-size: 0.8em;
+    margin: 0 0.5rem;
+}
+
+[data-theme="dark"] .about-text {
+    background: var(--card-bg);
+}
+
+/* Add hover effect */
+.about-text:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        padding: 1rem;
+    }
+    
+    .about-text {
+        padding: 1.5rem;
+    }
+    
+    .about-intro {
+        font-size: 1.1rem;
+    }
+    
+    .about-specialties li,
+    .about-passion,
+    .about-focus {
+        font-size: 1rem;
+    }
+    
+    .about-motto {
+        font-size: 1.1rem;
+    }
 }
 
 /* Skills Section */

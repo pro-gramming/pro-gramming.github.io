@@ -20,7 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Populate basic information
     document.getElementById('tagline').textContent = config.tagline;
-    document.getElementById('about-text').textContent = config.about;
+    
+    // Populate about section with structured content
+    const aboutText = document.getElementById('about-text');
+    aboutText.innerHTML = `
+        <p class="about-intro">${config.about.intro}</p>
+        <ul class="about-specialties">
+            ${config.about.specialties.map(specialty => `<li><i class="fas fa-check"></i> ${specialty}</li>`).join('')}
+        </ul>
+        <p class="about-passion">${config.about.passion}</p>
+        <p class="about-focus">${config.about.focus}</p>
+        <p class="about-motto"><i class="fas fa-quote-left"></i> ${config.about.motto} <i class="fas fa-quote-right"></i></p>
+    `;
+    
     document.getElementById('footer-name').textContent = config.name;
 
     // Populate contact information
