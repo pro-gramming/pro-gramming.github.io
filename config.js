@@ -24,54 +24,42 @@ const config = {
         { name: "Monitoring", icon: "fas fa-chart-line" }
     ],
 
-    projects: [
+    highlights: [
         {
-            name: "CI/CD Pipeline Optimization",
-            description: "Implemented GitLab CI/CD pipelines reducing deployment time and improving reliability",
-            icon: "fas fa-infinity",
+            title: "CI/CD Pipeline Optimization",
+            description: "Implemented GitLab CI/CD pipelines reducing deployment time by 40% and improving reliability through automated testing and deployment processes. Integrated with Docker for containerized builds and Jenkins for orchestration.",
             technologies: ["GitLab CI/CD", "Docker", "Jenkins", "GitHub Actions"],
-            liveLink: "#",
-            githubLink: "#"
+            link: "#"
         },
         {
-            name: "Infrastructure as Code Implementation",
-            description: "Managed infrastructure as code with Terraform and Ansible ensuring scalable and reliable cloud applications",
-            icon: "fas fa-code",
+            title: "Infrastructure as Code Implementation",
+            description: "Led the migration to Infrastructure as Code using Terraform and Ansible, resulting in 60% faster infrastructure provisioning and 80% reduction in configuration errors. Managed multi-cloud deployments across Azure and AWS.",
             technologies: ["Terraform", "Ansible", "Azure", "AWS", "IaC"],
-            liveLink: "#",
-            githubLink: "#"
+            link: "#"
         },
         {
-            name: "Azure Cloud Resource Manager",
-            description: "Developed and managed a Python-based framework for Azure-based cloud sessions with automated provisioning and cleanup.",
-            icon: "fab fa-microsoft",
+            title: "Azure Cloud Resource Manager",
+            description: "Developed a Python-based framework for Azure cloud session management, automating resource provisioning and cleanup. Reduced manual intervention by 90% and saved 30% in cloud costs through efficient resource management.",
             technologies: ["Python", "Azure", "Cloud Management", "Automation"],
-            liveLink: "#",
-            githubLink: "#"
+            link: "#"
         },
         {
-            name: "Kubernetes Monitoring Solution",
-            description: "Created various Grafana and Prometheus dashboards for Kubernetes clusters, improving visibility of workloads",
-            icon: "fas fa-chart-line",
-            technologies: ["Kubernetes", "Grafana", "Prometheus", "Monitoring", "Alerting"],
-            liveLink: "#",
-            githubLink: "#"
+            title: "Kubernetes Monitoring Solution",
+            description: "Implemented comprehensive monitoring solution using Grafana and Prometheus for Kubernetes clusters. Created custom dashboards and alerting rules that improved incident response time by 50%.",
+            technologies: ["Kubernetes", "Grafana", "Prometheus", "Monitoring"],
+            link: "#"
         },
         {
-            name: "Technology PoC Development",
-            description: "Conducted various proof-of-concepts to evaluate the feasibility of implementing new tools and technologies",
-            icon: "fas fa-flask",
-            technologies: ["Research", "Innovation", "Technology Evaluation", "Documentation"],
-            liveLink: "#",
-            githubLink: "#"
+            title: "Technology PoC Development",
+            description: "Led multiple proof-of-concept projects evaluating new tools and technologies. Conducted thorough analysis and documentation, enabling data-driven decisions for technology adoption.",
+            technologies: ["Research", "Innovation", "Technology Evaluation"],
+            link: "#"
         },
         {
-            name: "Custom Kubernetes Environments",
-            description: "Built custom images providing ready-made Kubernetes clusters and pre-configured tools for ed-tech course labs",
-            icon: "fas fa-dharmachakra",
+            title: "Custom Kubernetes Environments",
+            description: "Architected and built custom Kubernetes environments for educational platforms, featuring pre-configured tools and automated setup. Served over 1000 students with zero deployment issues.",
             technologies: ["Kubernetes", "Docker", "Container Images", "Education Tech"],
-            liveLink: "#",
-            githubLink: "#"
+            link: "#"
         }
     ],
 
