@@ -385,34 +385,163 @@ footer {
 }
 
 /* Certifications Section */
+.certifications {
+    overflow: hidden;
+    padding: 5rem 0;
+    min-height: 500px;
+    position: relative;
+}
+
 .certifications-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 0;
+    perspective: 1500px;
+    transform-style: preserve-3d;
+    position: relative;
     max-width: 1200px;
     margin: 0 auto;
+    height: 400px;
+    background: none;
 }
 
 .certification-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
     background: white;
     padding: 2rem;
     border-radius: 1rem;
+    text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: var(--transition);
+    width: 280px;
+    height: 180px;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.certification-card:hover {
-    transform: translateY(-5px);
+.certification-card.center {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+    z-index: 5;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.certification-card.left {
+    transform: translate(-85%, -50%) translateZ(-50px) rotateY(25deg);
+    opacity: 0.8;
+    z-index: 4;
+}
+
+.certification-card.right {
+    transform: translate(-15%, -50%) translateZ(-50px) rotateY(-25deg);
+    opacity: 0.8;
+    z-index: 4;
+}
+
+.certification-card.far-left {
+    transform: translate(-120%, -50%) translateZ(-100px) rotateY(35deg);
+    opacity: 0.6;
+    z-index: 3;
+}
+
+.certification-card.far-right {
+    transform: translate(20%, -50%) translateZ(-100px) rotateY(-35deg);
+    opacity: 0.6;
+    z-index: 3;
 }
 
 .certification-card h3 {
     color: var(--primary-color);
     margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    line-height: 1.4;
 }
 
 .certification-card .issuer {
     color: var(--light-text);
     font-size: 0.9rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+/* Certifications Navigation */
+.certifications-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.certifications-nav-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.certifications-nav-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.certifications-nav-btn i {
+    line-height: 1;
+}
+
+/* Remove animation overrides for certifications */
+.certifications.no-animate,
+.certifications.no-animate *,
+.certifications-grid.no-animate,
+.certifications-grid.no-animate * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.certifications-grid .certification-card {
+    transform: translate(-50%, -50%) !important;
+}
+
+.certifications-grid .certification-card.center {
+    transform: translate(-50%, -50%) scale(1.1) !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+.certifications-grid .certification-card.left {
+    transform: translate(-85%, -50%) translateZ(-50px) rotateY(25deg) !important;
+}
+
+.certifications-grid .certification-card.right {
+    transform: translate(-15%, -50%) translateZ(-50px) rotateY(-25deg) !important;
+}
+
+.certifications-grid .certification-card.far-left {
+    transform: translate(-120%, -50%) translateZ(-100px) rotateY(35deg) !important;
+}
+
+.certifications-grid .certification-card.far-right {
+    transform: translate(20%, -50%) translateZ(-100px) rotateY(-35deg) !important;
 }
 
 /* Experience Section */

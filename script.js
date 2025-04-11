@@ -205,6 +205,142 @@ document.addEventListener('DOMContentLoaded', () => {
         certificationsGrid.appendChild(certCard);
     });
 
+    // Certifications cover flow effect
+    let currentCertIndex = 0;
+    let isCertTransitioning = false;
+
+    function updateCertificationsDisplay(direction = 'next') {
+        if (isCertTransitioning) return;
+        isCertTransitioning = true;
+
+        const totalCerts = config.certifications.length;
+        const existingCards = Array.from(certificationsGrid.children);
+        
+        // Update existing cards based on direction
+        existingCards.forEach(card => {
+            const currentClass = Array.from(card.classList).find(cls => 
+                ['center', 'left', 'right', 'far-left', 'far-right'].includes(cls)
+            );
+            
+            if (currentClass) {
+                card.classList.remove(currentClass);
+                let newClass;
+                
+                if (direction === 'next') {
+                    switch (currentClass) {
+                        case 'far-left': card.remove(); return;
+                        case 'left': newClass = 'far-left'; break;
+                        case 'center': newClass = 'left'; break;
+                        case 'right': newClass = 'center'; break;
+                        case 'far-right': newClass = 'right'; break;
+                    }
+                } else {
+                    switch (currentClass) {
+                        case 'far-right': card.remove(); return;
+                        case 'right': newClass = 'far-right'; break;
+                        case 'center': newClass = 'right'; break;
+                        case 'left': newClass = 'center'; break;
+                        case 'far-left': newClass = 'left'; break;
+                    }
+                }
+                
+                if (newClass) {
+                    card.classList.add(newClass);
+                }
+            }
+        });
+
+        // Add new card
+        const newCard = document.createElement('div');
+        newCard.className = 'certification-card';
+        
+        let newIndex;
+        if (direction === 'next') {
+            newIndex = (currentCertIndex + 2 + totalCerts) % totalCerts;
+            newCard.classList.add('far-right');
+        } else {
+            newIndex = (currentCertIndex - 2 + totalCerts) % totalCerts;
+            newCard.classList.add('far-left');
+        }
+        
+        const cert = config.certifications[newIndex];
+        newCard.innerHTML = `
+            <h3>${cert.name}</h3>
+            ${cert.issuer ? `<div class="issuer">${cert.issuer}</div>` : ''}
+        `;
+        
+        // Initially set opacity to 0
+        newCard.style.opacity = '0';
+        certificationsGrid.appendChild(newCard);
+        
+        // Force reflow
+        newCard.offsetHeight;
+        
+        // Fade in the new card
+        requestAnimationFrame(() => {
+            newCard.style.opacity = '0.6';
+        });
+
+        // Reset transition lock after animation completes
+        setTimeout(() => {
+            isCertTransitioning = false;
+        }, 800);
+    }
+
+    // Initialize certifications display
+    function initializeCertificationsDisplay() {
+        certificationsGrid.innerHTML = '';
+        const totalCerts = config.certifications.length;
+        
+        // Create initial set of cards
+        for (let i = -2; i <= 2; i++) {
+            const certIndex = (currentCertIndex + i + totalCerts) % totalCerts;
+            const cert = config.certifications[certIndex];
+            
+            const certCard = document.createElement('div');
+            certCard.className = 'certification-card';
+            
+            if (i === 0) certCard.classList.add('center');
+            else if (i === -1) certCard.classList.add('left');
+            else if (i === 1) certCard.classList.add('right');
+            else if (i === -2) certCard.classList.add('far-left');
+            else if (i === 2) certCard.classList.add('far-right');
+            
+            certCard.innerHTML = `
+                <h3>${cert.name}</h3>
+                ${cert.issuer ? `<div class="issuer">${cert.issuer}</div>` : ''}
+            `;
+            
+            certificationsGrid.appendChild(certCard);
+        }
+    }
+
+    // Initialize certifications display
+    initializeCertificationsDisplay();
+
+    // Remove certifications section from animation system
+    const certificationsSection = document.getElementById('certifications');
+    if (certificationsSection) {
+        certificationsSection.classList.add('no-animate');
+        const observer = new IntersectionObserver(() => {}, { threshold: 0.1 });
+        observer.observe(certificationsSection);
+    }
+
+    // Add navigation event listeners for certifications
+    document.getElementById('prev-cert').addEventListener('click', () => {
+        if (!isCertTransitioning) {
+            currentCertIndex = (currentCertIndex - 1 + config.certifications.length) % config.certifications.length;
+            updateCertificationsDisplay('prev');
+        }
+    });
+
+    document.getElementById('next-cert').addEventListener('click', () => {
+        if (!isCertTransitioning) {
+            currentCertIndex = (currentCertIndex + 1 + config.certifications.length) % config.certifications.length;
+            updateCertificationsDisplay('next');
+        }
+    });
+
     // Populate experience
     const experienceTimeline = document.getElementById('experience-timeline');
     config.experience.forEach(exp => {
