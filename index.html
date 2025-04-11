@@ -15,7 +15,6 @@
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
-            <li><a href="#certifications">Certifications</a></li>
             <li><a href="#professional-highlights">Professional Highlights</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -28,7 +27,7 @@
             <p class="tagline" id="tagline"></p>
             <div class="cta-buttons">
                 <a href="#contact" class="btn primary">Get in Touch</a>
-                <a href="#projects" class="btn secondary">View My Work</a>
+                <a href="#professional-highlights" class="btn secondary">View Professional Highlights</a>
             </div>
         </div>
     </section>
@@ -59,31 +58,22 @@
         </div>
     </section>
 
-    <!-- Certifications Section -->
-    <section id="certifications" class="certifications">
-        <h2>Certifications</h2>
-        <div class="certifications-grid" id="certifications-grid">
-            <!-- Certifications will be populated by JavaScript -->
-        </div>
-        <div class="certifications-navigation">
-            <button class="certifications-nav-btn" id="prev-cert">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <button class="certifications-nav-btn" id="next-cert">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-    </section>
-
     <!-- Professional Highlights Section -->
     <section id="professional-highlights" class="professional-highlights">
         <h2>Professional Highlights</h2>
-        
-        <div class="spotlight-container">
-            <div class="spotlight"></div>
-            <div class="project-grid" id="project-grid">
-                <!-- Projects will be populated by JavaScript -->
+        <div class="highlights-grid" id="highlights-grid">
+            <!-- Projects will be populated by JavaScript -->
+        </div>
+        <div class="highlights-navigation">
+            <button class="highlights-nav-btn" id="prev-highlight">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="highlights-dots" id="highlights-dots">
+                <!-- Dots will be populated by JavaScript -->
             </div>
+            <button class="highlights-nav-btn" id="next-highlight">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
     </section>
 
@@ -95,6 +85,10 @@
                 <div class="contact-item">
                     <i class="fas fa-envelope"></i>
                     <a href="" id="email-link"></a>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    <a href="" id="linkedin-link" target="_blank">LinkedIn Profile</a>
                 </div>
             </div>
         </div>

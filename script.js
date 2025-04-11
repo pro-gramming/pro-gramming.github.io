@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Populate contact information
     document.getElementById('email-link').href = `mailto:${config.contact.email}`;
     document.getElementById('email-link').textContent = config.contact.email;
+    document.getElementById('linkedin-link').href = config.contact.linkedin;
 
     // Populate skills with cover flow effect
     const skillsGrid = document.getElementById('skills-grid');
@@ -127,6 +128,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the display
     initializeSkillsDisplay();
 
+    // Add automatic timer for skills slider
+    let skillsTimer;
+    const startSkillsTimer = () => {
+        skillsTimer = setInterval(() => {
+            if (!isTransitioning) {
+                currentIndex = (currentIndex + 1 + skills.length) % skills.length;
+                updateSkillsDisplay('next');
+            }
+        }, 3000); // Move every 3 seconds
+    };
+
+    // Start the skills timer
+    startSkillsTimer();
+
+    // Pause timer on hover
+    skillsGrid.addEventListener('mouseenter', () => clearInterval(skillsTimer));
+    skillsGrid.addEventListener('mouseleave', startSkillsTimer);
+
     // Completely remove the skills section from the animation system
     const skillsSection = document.getElementById('skills');
     if (skillsSection) {
@@ -193,30 +212,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Populate certifications
-    const certificationsGrid = document.getElementById('certifications-grid');
-    config.certifications.forEach(cert => {
-        const certCard = document.createElement('div');
-        certCard.className = 'certification-card';
-        certCard.innerHTML = `
-            <h3>${cert.name}</h3>
-            ${cert.issuer ? `<div class="issuer">${cert.issuer}</div>` : ''}
-        `;
-        certificationsGrid.appendChild(certCard);
-    });
+    // Populate projects with cover flow effect
+    const highlightsGrid = document.getElementById('highlights-grid');
+    const highlightsDots = document.getElementById('highlights-dots');
+    let currentHighlightIndex = 0;
+    const projects = config.projects;
+    let isHighlightTransitioning = false;
 
-    // Certifications cover flow effect
-    let currentCertIndex = 0;
-    let isCertTransitioning = false;
+    function updateHighlightsDisplay(direction = 'next') {
+        if (isHighlightTransitioning) return;
+        isHighlightTransitioning = true;
 
-    function updateCertificationsDisplay(direction = 'next') {
-        if (isCertTransitioning) return;
-        isCertTransitioning = true;
-
-        const totalCerts = config.certifications.length;
-        const existingCards = Array.from(certificationsGrid.children);
+        const totalProjects = projects.length;
+        const existingCards = Array.from(highlightsGrid.children);
         
-        // Update existing cards based on direction
+        // First, update classes on existing cards based on direction
         existingCards.forEach(card => {
             const currentClass = Array.from(card.classList).find(cls => 
                 ['center', 'left', 'right', 'far-left', 'far-right'].includes(cls)
@@ -252,94 +262,206 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Add new card
         const newCard = document.createElement('div');
-        newCard.className = 'certification-card';
+        newCard.className = 'highlight-card';
         
         let newIndex;
         if (direction === 'next') {
-            newIndex = (currentCertIndex + 2 + totalCerts) % totalCerts;
+            newIndex = (currentHighlightIndex + 2 + totalProjects) % totalProjects;
             newCard.classList.add('far-right');
         } else {
-            newIndex = (currentCertIndex - 2 + totalCerts) % totalCerts;
+            newIndex = (currentHighlightIndex - 2 + totalProjects) % totalProjects;
             newCard.classList.add('far-left');
         }
         
-        const cert = config.certifications[newIndex];
+        const project = projects[newIndex];
         newCard.innerHTML = `
-            <h3>${cert.name}</h3>
-            ${cert.issuer ? `<div class="issuer">${cert.issuer}</div>` : ''}
+            <div class="project-icon">
+                <i class="${project.icon}"></i>
+            </div>
+            <h3>${project.name}</h3>
+            <p>${project.description}</p>
+            <div class="project-technologies">
+                ${project.technologies.map(tech => `<span class="project-technology">${tech}</span>`).join('')}
+            </div>
         `;
         
         // Initially set opacity to 0
         newCard.style.opacity = '0';
-        certificationsGrid.appendChild(newCard);
+        highlightsGrid.appendChild(newCard);
         
         // Force reflow
         newCard.offsetHeight;
         
         // Fade in the new card
         requestAnimationFrame(() => {
-            newCard.style.opacity = '0.6';
+            newCard.style.opacity = direction === 'next' ? '0.6' : '0.6';
         });
+
+        // Update dot indicators
+        updateDotIndicators();
 
         // Reset transition lock after animation completes
         setTimeout(() => {
-            isCertTransitioning = false;
+            isHighlightTransitioning = false;
         }, 800);
     }
 
-    // Initialize certifications display
-    function initializeCertificationsDisplay() {
-        certificationsGrid.innerHTML = '';
-        const totalCerts = config.certifications.length;
+    // Initialize highlights display
+    function initializeHighlightsDisplay() {
+        highlightsGrid.innerHTML = '';
+        const totalProjects = projects.length;
         
         // Create initial set of cards
         for (let i = -2; i <= 2; i++) {
-            const certIndex = (currentCertIndex + i + totalCerts) % totalCerts;
-            const cert = config.certifications[certIndex];
+            const projectIndex = (currentHighlightIndex + i + totalProjects) % totalProjects;
+            const project = projects[projectIndex];
             
-            const certCard = document.createElement('div');
-            certCard.className = 'certification-card';
+            const highlightCard = document.createElement('div');
+            highlightCard.className = 'highlight-card';
             
-            if (i === 0) certCard.classList.add('center');
-            else if (i === -1) certCard.classList.add('left');
-            else if (i === 1) certCard.classList.add('right');
-            else if (i === -2) certCard.classList.add('far-left');
-            else if (i === 2) certCard.classList.add('far-right');
+            if (i === 0) highlightCard.classList.add('center');
+            else if (i === -1) highlightCard.classList.add('left');
+            else if (i === 1) highlightCard.classList.add('right');
+            else if (i === -2) highlightCard.classList.add('far-left');
+            else if (i === 2) highlightCard.classList.add('far-right');
             
-            certCard.innerHTML = `
-                <h3>${cert.name}</h3>
-                ${cert.issuer ? `<div class="issuer">${cert.issuer}</div>` : ''}
+            highlightCard.innerHTML = `
+                <div class="project-icon">
+                    <i class="${project.icon}"></i>
+                </div>
+                <h3>${project.name}</h3>
+                <p>${project.description}</p>
+                <div class="project-technologies">
+                    ${project.technologies.map(tech => `<span class="project-technology">${tech}</span>`).join('')}
+                </div>
             `;
             
-            certificationsGrid.appendChild(certCard);
+            highlightsGrid.appendChild(highlightCard);
+        }
+
+        // Create dot indicators
+        createDotIndicators();
+    }
+
+    // Create dot indicators
+    function createDotIndicators() {
+        highlightsDots.innerHTML = '';
+        projects.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.className = `highlight-dot ${index === currentHighlightIndex ? 'active' : ''}`;
+            dot.addEventListener('click', () => {
+                if (!isHighlightTransitioning) {
+                    const diff = index - currentHighlightIndex;
+                    if (diff !== 0) {
+                        const direction = diff > 0 ? 'next' : 'prev';
+                        const steps = Math.abs(diff);
+                        for (let i = 0; i < steps; i++) {
+                            setTimeout(() => {
+                                currentHighlightIndex = (currentHighlightIndex + (direction === 'next' ? 1 : -1) + projects.length) % projects.length;
+                                updateHighlightsDisplay(direction);
+                            }, i * 800);
+                        }
+                    }
+                }
+            });
+            highlightsDots.appendChild(dot);
+        });
+    }
+
+    // Update dot indicators
+    function updateDotIndicators() {
+        const dots = highlightsDots.children;
+        Array.from(dots).forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentHighlightIndex);
+        });
+    }
+
+    // Initialize the highlights display
+    initializeHighlightsDisplay();
+
+    // Add automatic timer for highlights slider
+    let highlightsTimer;
+    const startHighlightsTimer = () => {
+        highlightsTimer = setInterval(() => {
+            if (!isHighlightTransitioning) {
+                currentHighlightIndex = (currentHighlightIndex + 1 + projects.length) % projects.length;
+                updateHighlightsDisplay('next');
+            }
+        }, 3000); // Move every 3 seconds
+    };
+
+    // Start the highlights timer
+    startHighlightsTimer();
+
+    // Pause timer on hover
+    highlightsGrid.addEventListener('mouseenter', () => clearInterval(highlightsTimer));
+    highlightsGrid.addEventListener('mouseleave', startHighlightsTimer);
+
+    // Add navigation event listeners
+    document.getElementById('prev-highlight').addEventListener('click', () => {
+        if (!isHighlightTransitioning) {
+            currentHighlightIndex = (currentHighlightIndex - 1 + projects.length) % projects.length;
+            updateHighlightsDisplay('prev');
+        }
+    });
+
+    document.getElementById('next-highlight').addEventListener('click', () => {
+        if (!isHighlightTransitioning) {
+            currentHighlightIndex = (currentHighlightIndex + 1 + projects.length) % projects.length;
+            updateHighlightsDisplay('next');
+        }
+    });
+
+    // Add keyboard navigation for highlights
+    document.addEventListener('keydown', (e) => {
+        if (!isHighlightTransitioning) {
+            if (e.key === 'ArrowLeft') {
+                currentHighlightIndex = (currentHighlightIndex - 1 + projects.length) % projects.length;
+                updateHighlightsDisplay('prev');
+            } else if (e.key === 'ArrowRight') {
+                currentHighlightIndex = (currentHighlightIndex + 1 + projects.length) % projects.length;
+                updateHighlightsDisplay('next');
+            }
+        }
+    });
+
+    // Add touch/swipe support for highlights
+    let highlightTouchStartX = 0;
+    let highlightTouchEndX = 0;
+
+    highlightsGrid.addEventListener('touchstart', (e) => {
+        highlightTouchStartX = e.changedTouches[0].screenX;
+    });
+
+    highlightsGrid.addEventListener('touchend', (e) => {
+        highlightTouchEndX = e.changedTouches[0].screenX;
+        handleHighlightSwipe();
+    });
+
+    function handleHighlightSwipe() {
+        const swipeThreshold = 50;
+        const diff = highlightTouchStartX - highlightTouchEndX;
+
+        if (Math.abs(diff) > swipeThreshold && !isHighlightTransitioning) {
+            if (diff > 0) {
+                // Swipe left - go next
+                currentHighlightIndex = (currentHighlightIndex + 1 + projects.length) % projects.length;
+                updateHighlightsDisplay('next');
+            } else {
+                // Swipe right - go previous
+                currentHighlightIndex = (currentHighlightIndex - 1 + projects.length) % projects.length;
+                updateHighlightsDisplay('prev');
+            }
         }
     }
 
-    // Initialize certifications display
-    initializeCertificationsDisplay();
-
-    // Remove certifications section from animation system
-    const certificationsSection = document.getElementById('certifications');
-    if (certificationsSection) {
-        certificationsSection.classList.add('no-animate');
+    // Remove highlights section from animation system
+    const highlightsSection = document.getElementById('professional-highlights');
+    if (highlightsSection) {
+        highlightsSection.classList.add('no-animate');
         const observer = new IntersectionObserver(() => {}, { threshold: 0.1 });
-        observer.observe(certificationsSection);
+        observer.observe(highlightsSection);
     }
-
-    // Add navigation event listeners for certifications
-    document.getElementById('prev-cert').addEventListener('click', () => {
-        if (!isCertTransitioning) {
-            currentCertIndex = (currentCertIndex - 1 + config.certifications.length) % config.certifications.length;
-            updateCertificationsDisplay('prev');
-        }
-    });
-
-    document.getElementById('next-cert').addEventListener('click', () => {
-        if (!isCertTransitioning) {
-            currentCertIndex = (currentCertIndex + 1 + config.certifications.length) % config.certifications.length;
-            updateCertificationsDisplay('next');
-        }
-    });
 
     // Populate projects
     const projectGrid = document.getElementById('project-grid');
@@ -368,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
         createObserver([section]);
         
         // Observe grid containers within sections
-        const grids = section.querySelectorAll('.skills-grid, .certifications-grid, .project-grid');
+        const grids = section.querySelectorAll('.skills-grid, .project-grid');
         if (grids.length) {
             grids.forEach(grid => {
                 createObserver([grid]);
@@ -376,21 +498,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Observe individual items
-        const items = section.querySelectorAll('.skill-card, .certification-card, .project-card');
+        const items = section.querySelectorAll('.skill-card, .project-card');
         if (items.length) {
             createObserver(Array.from(items));
         }
     });
 
-    // Remove skills and certifications sections from animation system
-    ['skills', 'certifications'].forEach(sectionId => {
-        const section = document.getElementById(sectionId);
-        if (section) {
-            section.classList.add('no-animate');
-            const observer = new IntersectionObserver(() => {}, { threshold: 0.1 });
-            observer.observe(section);
-        }
-    });
+    // Remove skills section from animation system
+    if (skillsSection) {
+        skillsSection.classList.add('no-animate');
+        const observer = new IntersectionObserver(() => {}, { threshold: 0.1 });
+        observer.observe(skillsSection);
+    }
 });
 
 // Smooth scrolling for navigation links
@@ -419,14 +538,22 @@ const createObserver = (elements, className = 'animate') => {
                 
                 // For grid containers, animate their children
                 if (entry.target.classList.contains('skills-grid') ||
-                    entry.target.classList.contains('certifications-grid') ||
-                    entry.target.classList.contains('project-grid')) {
+                    entry.target.classList.contains('project-grid') ||
+                    entry.target.classList.contains('highlights-grid')) {
                     Array.from(entry.target.children).forEach((child, index) => {
                         // Add a slight delay before adding the animate class
                         setTimeout(() => {
                             child.classList.add('animate');
                         }, index * 100);
                     });
+                }
+                
+                // For sections, animate their headings
+                if (entry.target.tagName === 'SECTION') {
+                    const heading = entry.target.querySelector('h2');
+                    if (heading) {
+                        heading.classList.add('animate');
+                    }
                 }
                 
                 observer.unobserve(entry.target);

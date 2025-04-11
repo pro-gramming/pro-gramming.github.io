@@ -642,6 +642,12 @@ section.animate h2 {
     animation: fadeInUp 0.6s ease forwards;
 }
 
+/* Fallback for section headings to ensure they're visible */
+section h2 {
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.2s;
+}
+
 /* Skills grid animations and transforms */
 .skills-grid .skill-card {
     transform: translate(-50%, -50%) !important;
@@ -690,4 +696,192 @@ section.animate h2 {
 .project-card {
     opacity: 0;
     transform: translateY(30px);
+}
+
+/* Professional Highlights Section */
+.professional-highlights {
+    overflow: hidden;
+    padding: 5rem 0;
+    min-height: 500px;
+    position: relative;
+}
+
+.highlights-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 0;
+    perspective: 1500px;
+    transform-style: preserve-3d;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 400px;
+    background: none;
+}
+
+.highlight-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 280px;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.highlight-card.center {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+    z-index: 5;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.highlight-card.left {
+    transform: translate(-85%, -50%) translateZ(-50px) rotateY(25deg);
+    opacity: 0.8;
+    z-index: 4;
+}
+
+.highlight-card.right {
+    transform: translate(-15%, -50%) translateZ(-50px) rotateY(-25deg);
+    opacity: 0.8;
+    z-index: 4;
+}
+
+.highlight-card.far-left {
+    transform: translate(-120%, -50%) translateZ(-100px) rotateY(35deg);
+    opacity: 0.6;
+    z-index: 3;
+}
+
+.highlight-card.far-right {
+    transform: translate(20%, -50%) translateZ(-100px) rotateY(-35deg);
+    opacity: 0.6;
+    z-index: 3;
+}
+
+.highlight-card i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.highlight-card h3 {
+    margin: 1rem 0;
+    color: var(--text-color);
+    font-size: 1.2rem;
+}
+
+.highlight-card p {
+    color: var(--light-text);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.highlight-card .project-technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.highlight-card .project-technology {
+    background: var(--section-bg);
+    color: var(--primary-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+}
+
+/* Highlights Navigation */
+.highlights-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.highlights-nav-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.highlights-nav-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.highlights-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.highlight-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--light-text);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.highlight-dot.active {
+    background: var(--primary-color);
+    transform: scale(1.2);
+}
+
+/* Remove animation overrides for highlights */
+.professional-highlights.no-animate,
+.professional-highlights.no-animate *,
+.highlights-grid.no-animate,
+.highlights-grid.no-animate * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.highlights-grid .highlight-card {
+    transform: translate(-50%, -50%) !important;
+}
+
+.highlights-grid .highlight-card.center {
+    transform: translate(-50%, -50%) scale(1.1) !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+.highlights-grid .highlight-card.left {
+    transform: translate(-85%, -50%) translateZ(-50px) rotateY(25deg) !important;
+}
+
+.highlights-grid .highlight-card.right {
+    transform: translate(-15%, -50%) translateZ(-50px) rotateY(-25deg) !important;
+}
+
+.highlights-grid .highlight-card.far-left {
+    transform: translate(-120%, -50%) translateZ(-100px) rotateY(35deg) !important;
+}
+
+.highlights-grid .highlight-card.far-right {
+    transform: translate(20%, -50%) translateZ(-100px) rotateY(-35deg) !important;
 }

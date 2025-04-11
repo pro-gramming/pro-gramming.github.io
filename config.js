@@ -5,7 +5,8 @@ const config = {
     about: `Highly skilled DevOps Engineer with over 3 years of experience in automating, deploying, and maintaining infrastructure. Proven track record of improving efficiency and reducing downtime through implementing best practices and utilizing cutting-edge technologies. Seeking to leverage my expertise to drive innovation and streamline processes in a dynamic and collaborative environment.`,
     
     contact: {
-        email: "dineshps8527@gmail.com"
+        email: "dineshps8527@gmail.com",
+        linkedin: "https://www.linkedin.com/in/dinesh-pratap-singh-595956190"
     },
 
     skills: [
@@ -21,33 +22,6 @@ const config = {
         { name: "Bash Scripting", icon: "fas fa-terminal" },
         { name: "IaC", icon: "fas fa-code" },
         { name: "Monitoring", icon: "fas fa-chart-line" }
-    ],
-
-    certifications: [
-        {
-            name: "CKS: Certified Kubernetes Security Specialist",
-            issuer: "The Linux Foundation"
-        },
-        {
-            name: "CKA: Certified Kubernetes Administrator",
-            issuer: "The Linux Foundation"
-        },
-        {
-            name: "CKAD: Certified Kubernetes Application Developer",
-            issuer: "The Linux Foundation"
-        },
-        {
-            name: "KCNA: Kubernetes and Cloud Native Associate",
-            issuer: "The Linux Foundation"
-        },
-        {
-            name: "LFCS: Linux Foundation Certified Systems Administrator",
-            issuer: "The Linux Foundation"
-        },
-        {
-            name: "HashiCorp Certified: Terraform Associate",
-            issuer: "HashiCorp"
-        }
     ],
 
     projects: [
