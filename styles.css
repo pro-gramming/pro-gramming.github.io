@@ -142,31 +142,118 @@ h2 {
 }
 
 /* Skills Section */
+.skills {
+    overflow: hidden;
+    padding: 5rem 0;
+    min-height: 500px;
+    position: relative;
+}
+
 .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 0;
+    perspective: 1500px;
+    transform-style: preserve-3d;
+    position: relative;
     max-width: 1200px;
     margin: 0 auto;
+    height: 400px;
+    background: none;
 }
 
 .skill-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
     background: white;
     padding: 2rem;
     border-radius: 1rem;
     text-align: center;
-    transition: var(--transition);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 280px;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.skill-card:hover {
-    transform: translateY(-5px);
+.skill-card.center {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+    z-index: 5;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.skill-card.left {
+    transform: translate(-85%, -50%) translateZ(-50px) rotateY(25deg);
+    opacity: 0.8;
+    z-index: 4;
+}
+
+.skill-card.right {
+    transform: translate(-15%, -50%) translateZ(-50px) rotateY(-25deg);
+    opacity: 0.8;
+    z-index: 4;
+}
+
+.skill-card.far-left {
+    transform: translate(-120%, -50%) translateZ(-100px) rotateY(35deg);
+    opacity: 0.6;
+    z-index: 3;
+}
+
+.skill-card.far-right {
+    transform: translate(20%, -50%) translateZ(-100px) rotateY(-35deg);
+    opacity: 0.6;
+    z-index: 3;
 }
 
 .skill-card i {
     font-size: 3rem;
     color: var(--primary-color);
     margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.skill-card h3 {
+    margin: 1rem 0;
+    color: var(--text-color);
+    font-size: 1.2rem;
+}
+
+/* Cover Flow Navigation */
+.skills-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.skills-nav-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.skills-nav-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.skills-nav-btn i {
+    line-height: 1;
 }
 
 /* Projects Section */
@@ -298,34 +385,163 @@ footer {
 }
 
 /* Certifications Section */
+.certifications {
+    overflow: hidden;
+    padding: 5rem 0;
+    min-height: 500px;
+    position: relative;
+}
+
 .certifications-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 0;
+    perspective: 1500px;
+    transform-style: preserve-3d;
+    position: relative;
     max-width: 1200px;
     margin: 0 auto;
+    height: 400px;
+    background: none;
 }
 
 .certification-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
     background: white;
     padding: 2rem;
     border-radius: 1rem;
+    text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: var(--transition);
+    width: 280px;
+    height: 180px;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.certification-card:hover {
-    transform: translateY(-5px);
+.certification-card.center {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+    z-index: 5;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.certification-card.left {
+    transform: translate(-85%, -50%) translateZ(-50px) rotateY(25deg);
+    opacity: 0.8;
+    z-index: 4;
+}
+
+.certification-card.right {
+    transform: translate(-15%, -50%) translateZ(-50px) rotateY(-25deg);
+    opacity: 0.8;
+    z-index: 4;
+}
+
+.certification-card.far-left {
+    transform: translate(-120%, -50%) translateZ(-100px) rotateY(35deg);
+    opacity: 0.6;
+    z-index: 3;
+}
+
+.certification-card.far-right {
+    transform: translate(20%, -50%) translateZ(-100px) rotateY(-35deg);
+    opacity: 0.6;
+    z-index: 3;
 }
 
 .certification-card h3 {
     color: var(--primary-color);
     margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    line-height: 1.4;
 }
 
 .certification-card .issuer {
     color: var(--light-text);
     font-size: 0.9rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+/* Certifications Navigation */
+.certifications-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.certifications-nav-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.certifications-nav-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.certifications-nav-btn i {
+    line-height: 1;
+}
+
+/* Remove animation overrides for certifications */
+.certifications.no-animate,
+.certifications.no-animate *,
+.certifications-grid.no-animate,
+.certifications-grid.no-animate * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.certifications-grid .certification-card {
+    transform: translate(-50%, -50%) !important;
+}
+
+.certifications-grid .certification-card.center {
+    transform: translate(-50%, -50%) scale(1.1) !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+.certifications-grid .certification-card.left {
+    transform: translate(-85%, -50%) translateZ(-50px) rotateY(25deg) !important;
+}
+
+.certifications-grid .certification-card.right {
+    transform: translate(-15%, -50%) translateZ(-50px) rotateY(-25deg) !important;
+}
+
+.certifications-grid .certification-card.far-left {
+    transform: translate(-120%, -50%) translateZ(-100px) rotateY(35deg) !important;
+}
+
+.certifications-grid .certification-card.far-right {
+    transform: translate(20%, -50%) translateZ(-100px) rotateY(-35deg) !important;
 }
 
 /* Experience Section */
@@ -389,4 +605,158 @@ footer {
     position: absolute;
     left: 0;
     top: 0;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes rotateIn {
+    0% {
+        transform: rotate(-180deg) scale(0.7);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Initial state for animated elements - REMOVE SKILL CARDS */
+.certification-card,
+.experience-item,
+.project-card {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* Animation classes */
+.animate {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Stagger delays for different sections */
+.skills-grid .skill-card.animate:nth-child(1),
+.skills-grid .skill-card.animate:nth-child(2),
+.skills-grid .skill-card.animate:nth-child(3),
+.skills-grid .skill-card.animate:nth-child(4),
+.skills-grid .skill-card.animate:nth-child(5),
+.skills-grid .skill-card.animate:nth-child(6) {
+    animation-delay: 0s;
+}
+
+.certifications-grid .certification-card.animate:nth-child(1) { animation-delay: 0.1s; }
+.certifications-grid .certification-card.animate:nth-child(2) { animation-delay: 0.2s; }
+.certifications-grid .certification-card.animate:nth-child(3) { animation-delay: 0.3s; }
+.certifications-grid .certification-card.animate:nth-child(4) { animation-delay: 0.4s; }
+.certifications-grid .certification-card.animate:nth-child(5) { animation-delay: 0.5s; }
+.certifications-grid .certification-card.animate:nth-child(6) { animation-delay: 0.6s; }
+
+/* Hover effects */
+.skill-card:hover,
+.certification-card:hover,
+.project-card:hover,
+.experience-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.skill-card:hover i,
+.project-card:hover .project-icon i {
+    animation: rotateIn 0.6s ease;
+}
+
+/* Hero section animations */
+.hero-content h1,
+.hero-content .tagline,
+.hero-content .cta-buttons {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.hero-content h1 {
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.2s;
+}
+
+.hero-content .tagline {
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.4s;
+}
+
+.hero-content .cta-buttons {
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.6s;
+}
+
+/* Section titles */
+section h2 {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+section.animate h2 {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Remove all animation delays and overrides for skills */
+.skills-grid .skill-card.animate,
+.skills-grid .skill-card.animate:nth-child(1),
+.skills-grid .skill-card.animate:nth-child(2),
+.skills-grid .skill-card.animate:nth-child(3),
+.skills-grid .skill-card.animate:nth-child(4),
+.skills-grid .skill-card.animate:nth-child(5),
+.skills-grid .skill-card.animate:nth-child(6) {
+    animation: none;
+    animation-delay: 0s;
+    opacity: 1;
+}
+
+.skills.no-animate,
+.skills.no-animate *,
+.skills-grid.no-animate,
+.skills-grid.no-animate * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.skills-grid .skill-card {
+    transform: translate(-50%, -50%) !important;
+}
+
+.skills-grid .skill-card.center {
+    transform: translate(-50%, -50%) scale(1.1) !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+.skills-grid .skill-card.left {
+    transform: translate(-85%, -50%) translateZ(-50px) rotateY(25deg) !important;
+}
+
+.skills-grid .skill-card.right {
+    transform: translate(-15%, -50%) translateZ(-50px) rotateY(-25deg) !important;
+}
+
+.skills-grid .skill-card.far-left {
+    transform: translate(-120%, -50%) translateZ(-100px) rotateY(35deg) !important;
+}
+
+.skills-grid .skill-card.far-right {
+    transform: translate(20%, -50%) translateZ(-100px) rotateY(-35deg) !important;
+}
+
+/* Remove all animation overrides */
+.skills.no-animate .skill-card,
+.skills-grid.no-animate .skill-card {
+    animation: none !important;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
 } 

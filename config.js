@@ -19,7 +19,7 @@ const config = {
         { name: "Python Development", icon: "fab fa-python" },
         { name: "CI/CD proficiency", icon: "fas fa-infinity" },
         { name: "Bash Scripting", icon: "fas fa-terminal" },
-        { name: "Infrastructure as Code (IaC)", icon: "fas fa-code" },
+        { name: "IaC", icon: "fas fa-code" },
         { name: "Monitoring", icon: "fas fa-chart-line" }
     ],
 

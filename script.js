@@ -12,17 +12,186 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('email-link').href = `mailto:${config.contact.email}`;
     document.getElementById('email-link').textContent = config.contact.email;
 
-    // Populate skills
+    // Populate skills with cover flow effect
     const skillsGrid = document.getElementById('skills-grid');
-    config.skills.forEach(skill => {
-        const skillCard = document.createElement('div');
-        skillCard.className = 'skill-card';
-        skillCard.innerHTML = `
+    let currentIndex = 0;
+    const skills = config.skills;
+    let isTransitioning = false;
+
+    function updateSkillsDisplay(direction = 'next') {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        const totalSkills = skills.length;
+        const existingCards = Array.from(skillsGrid.children);
+        
+        // First, update classes on existing cards based on direction
+        existingCards.forEach(card => {
+            const currentClass = Array.from(card.classList).find(cls => 
+                ['center', 'left', 'right', 'far-left', 'far-right'].includes(cls)
+            );
+            
+            if (currentClass) {
+                card.classList.remove(currentClass);
+                let newClass;
+                
+                if (direction === 'next') {
+                    switch (currentClass) {
+                        case 'far-left': card.remove(); return;
+                        case 'left': newClass = 'far-left'; break;
+                        case 'center': newClass = 'left'; break;
+                        case 'right': newClass = 'center'; break;
+                        case 'far-right': newClass = 'right'; break;
+                    }
+                } else {
+                    switch (currentClass) {
+                        case 'far-right': card.remove(); return;
+                        case 'right': newClass = 'far-right'; break;
+                        case 'center': newClass = 'right'; break;
+                        case 'left': newClass = 'center'; break;
+                        case 'far-left': newClass = 'left'; break;
+                    }
+                }
+                
+                if (newClass) {
+                    card.classList.add(newClass);
+                }
+            }
+        });
+
+        // Add new card
+        const newCard = document.createElement('div');
+        newCard.className = 'skill-card';
+        
+        let newIndex;
+        if (direction === 'next') {
+            newIndex = (currentIndex + 2 + totalSkills) % totalSkills;
+            newCard.classList.add('far-right');
+        } else {
+            newIndex = (currentIndex - 2 + totalSkills) % totalSkills;
+            newCard.classList.add('far-left');
+        }
+        
+        const skill = skills[newIndex];
+        newCard.innerHTML = `
             <i class="${skill.icon}"></i>
             <h3>${skill.name}</h3>
         `;
-        skillsGrid.appendChild(skillCard);
+        
+        // Initially set opacity to 0
+        newCard.style.opacity = '0';
+        skillsGrid.appendChild(newCard);
+        
+        // Force reflow
+        newCard.offsetHeight;
+        
+        // Fade in the new card
+        requestAnimationFrame(() => {
+            newCard.style.opacity = '0.6';
+        });
+
+        // Reset transition lock after animation completes
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 800);
+    }
+
+    // Initialize skills display
+    function initializeSkillsDisplay() {
+        skillsGrid.innerHTML = '';
+        const totalSkills = skills.length;
+        
+        // Create initial set of cards
+        for (let i = -2; i <= 2; i++) {
+            const skillIndex = (currentIndex + i + totalSkills) % totalSkills;
+            const skill = skills[skillIndex];
+            
+            const skillCard = document.createElement('div');
+            skillCard.className = 'skill-card';
+            
+            if (i === 0) skillCard.classList.add('center');
+            else if (i === -1) skillCard.classList.add('left');
+            else if (i === 1) skillCard.classList.add('right');
+            else if (i === -2) skillCard.classList.add('far-left');
+            else if (i === 2) skillCard.classList.add('far-right');
+            
+            skillCard.innerHTML = `
+                <i class="${skill.icon}"></i>
+                <h3>${skill.name}</h3>
+            `;
+            
+            skillsGrid.appendChild(skillCard);
+        }
+    }
+
+    // Initialize the display
+    initializeSkillsDisplay();
+
+    // Completely remove the skills section from the animation system
+    const skillsSection = document.getElementById('skills');
+    if (skillsSection) {
+        skillsSection.classList.add('no-animate');
+        const observer = new IntersectionObserver(() => {}, { threshold: 0.1 });
+        observer.observe(skillsSection);
+    }
+
+    // Add navigation event listeners
+    document.getElementById('prev-skill').addEventListener('click', () => {
+        if (!isTransitioning) {
+            currentIndex = (currentIndex - 1 + skills.length) % skills.length;
+            updateSkillsDisplay('prev');
+        }
     });
+
+    document.getElementById('next-skill').addEventListener('click', () => {
+        if (!isTransitioning) {
+            currentIndex = (currentIndex + 1 + skills.length) % skills.length;
+            updateSkillsDisplay('next');
+        }
+    });
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (!isTransitioning) {
+            if (e.key === 'ArrowLeft') {
+                currentIndex = (currentIndex - 1 + skills.length) % skills.length;
+                updateSkillsDisplay('prev');
+            } else if (e.key === 'ArrowRight') {
+                currentIndex = (currentIndex + 1 + skills.length) % skills.length;
+                updateSkillsDisplay('next');
+            }
+        }
+    });
+
+    // Add touch/swipe support with smooth transitions
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    skillsGrid.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    skillsGrid.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > swipeThreshold && !isTransitioning) {
+            if (diff > 0) {
+                // Swipe left - go next
+                currentIndex = (currentIndex + 1 + skills.length) % skills.length;
+                updateSkillsDisplay('next');
+            } else {
+                // Swipe right - go previous
+                currentIndex = (currentIndex - 1 + skills.length) % skills.length;
+                updateSkillsDisplay('prev');
+            }
+        }
+    }
 
     // Populate certifications
     const certificationsGrid = document.getElementById('certifications-grid');
@@ -34,6 +203,142 @@ document.addEventListener('DOMContentLoaded', () => {
             ${cert.issuer ? `<div class="issuer">${cert.issuer}</div>` : ''}
         `;
         certificationsGrid.appendChild(certCard);
+    });
+
+    // Certifications cover flow effect
+    let currentCertIndex = 0;
+    let isCertTransitioning = false;
+
+    function updateCertificationsDisplay(direction = 'next') {
+        if (isCertTransitioning) return;
+        isCertTransitioning = true;
+
+        const totalCerts = config.certifications.length;
+        const existingCards = Array.from(certificationsGrid.children);
+        
+        // Update existing cards based on direction
+        existingCards.forEach(card => {
+            const currentClass = Array.from(card.classList).find(cls => 
+                ['center', 'left', 'right', 'far-left', 'far-right'].includes(cls)
+            );
+            
+            if (currentClass) {
+                card.classList.remove(currentClass);
+                let newClass;
+                
+                if (direction === 'next') {
+                    switch (currentClass) {
+                        case 'far-left': card.remove(); return;
+                        case 'left': newClass = 'far-left'; break;
+                        case 'center': newClass = 'left'; break;
+                        case 'right': newClass = 'center'; break;
+                        case 'far-right': newClass = 'right'; break;
+                    }
+                } else {
+                    switch (currentClass) {
+                        case 'far-right': card.remove(); return;
+                        case 'right': newClass = 'far-right'; break;
+                        case 'center': newClass = 'right'; break;
+                        case 'left': newClass = 'center'; break;
+                        case 'far-left': newClass = 'left'; break;
+                    }
+                }
+                
+                if (newClass) {
+                    card.classList.add(newClass);
+                }
+            }
+        });
+
+        // Add new card
+        const newCard = document.createElement('div');
+        newCard.className = 'certification-card';
+        
+        let newIndex;
+        if (direction === 'next') {
+            newIndex = (currentCertIndex + 2 + totalCerts) % totalCerts;
+            newCard.classList.add('far-right');
+        } else {
+            newIndex = (currentCertIndex - 2 + totalCerts) % totalCerts;
+            newCard.classList.add('far-left');
+        }
+        
+        const cert = config.certifications[newIndex];
+        newCard.innerHTML = `
+            <h3>${cert.name}</h3>
+            ${cert.issuer ? `<div class="issuer">${cert.issuer}</div>` : ''}
+        `;
+        
+        // Initially set opacity to 0
+        newCard.style.opacity = '0';
+        certificationsGrid.appendChild(newCard);
+        
+        // Force reflow
+        newCard.offsetHeight;
+        
+        // Fade in the new card
+        requestAnimationFrame(() => {
+            newCard.style.opacity = '0.6';
+        });
+
+        // Reset transition lock after animation completes
+        setTimeout(() => {
+            isCertTransitioning = false;
+        }, 800);
+    }
+
+    // Initialize certifications display
+    function initializeCertificationsDisplay() {
+        certificationsGrid.innerHTML = '';
+        const totalCerts = config.certifications.length;
+        
+        // Create initial set of cards
+        for (let i = -2; i <= 2; i++) {
+            const certIndex = (currentCertIndex + i + totalCerts) % totalCerts;
+            const cert = config.certifications[certIndex];
+            
+            const certCard = document.createElement('div');
+            certCard.className = 'certification-card';
+            
+            if (i === 0) certCard.classList.add('center');
+            else if (i === -1) certCard.classList.add('left');
+            else if (i === 1) certCard.classList.add('right');
+            else if (i === -2) certCard.classList.add('far-left');
+            else if (i === 2) certCard.classList.add('far-right');
+            
+            certCard.innerHTML = `
+                <h3>${cert.name}</h3>
+                ${cert.issuer ? `<div class="issuer">${cert.issuer}</div>` : ''}
+            `;
+            
+            certificationsGrid.appendChild(certCard);
+        }
+    }
+
+    // Initialize certifications display
+    initializeCertificationsDisplay();
+
+    // Remove certifications section from animation system
+    const certificationsSection = document.getElementById('certifications');
+    if (certificationsSection) {
+        certificationsSection.classList.add('no-animate');
+        const observer = new IntersectionObserver(() => {}, { threshold: 0.1 });
+        observer.observe(certificationsSection);
+    }
+
+    // Add navigation event listeners for certifications
+    document.getElementById('prev-cert').addEventListener('click', () => {
+        if (!isCertTransitioning) {
+            currentCertIndex = (currentCertIndex - 1 + config.certifications.length) % config.certifications.length;
+            updateCertificationsDisplay('prev');
+        }
+    });
+
+    document.getElementById('next-cert').addEventListener('click', () => {
+        if (!isCertTransitioning) {
+            currentCertIndex = (currentCertIndex + 1 + config.certifications.length) % config.certifications.length;
+            updateCertificationsDisplay('next');
+        }
     });
 
     // Populate experience
@@ -88,43 +393,92 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar background change on scroll
-const navbar = document.querySelector('.navbar');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.style.background = '#ffffff';
-        navbar.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
-    } else {
-        navbar.style.background = 'transparent';
-        navbar.style.boxShadow = 'none';
-    }
-});
-
-// Animate elements on scroll
+// Enhanced Intersection Observer options
 const observerOptions = {
     root: null,
     rootMargin: '0px',
     threshold: 0.1
 };
 
-const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate');
-            observer.unobserve(entry.target);
+// Create observers for different types of elements
+const createObserver = (elements, className = 'animate') => {
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add(className);
+                
+                // For grid containers, animate their children
+                if (entry.target.classList.contains('skills-grid') ||
+                    entry.target.classList.contains('certifications-grid') ||
+                    entry.target.classList.contains('project-grid')) {
+                    Array.from(entry.target.children).forEach((child, index) => {
+                        // Add a slight delay before adding the animate class
+                        setTimeout(() => {
+                            child.classList.add('animate');
+                        }, index * 100);
+                    });
+                }
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    elements.forEach(element => observer.observe(element));
+};
+
+// Initialize animations
+document.addEventListener('DOMContentLoaded', () => {
+    // ... existing configuration code ...
+
+    // Observe sections for animation
+    document.querySelectorAll('section').forEach(section => {
+        createObserver([section]);
+        
+        // Observe grid containers within sections
+        const grids = section.querySelectorAll('.skills-grid, .certifications-grid, .project-grid, .experience-timeline');
+        if (grids.length) {
+            grids.forEach(grid => {
+                createObserver([grid]);
+            });
+        }
+        
+        // Observe individual items
+        const items = section.querySelectorAll('.skill-card, .certification-card, .project-card, .experience-item');
+        if (items.length) {
+            createObserver(Array.from(items));
         }
     });
-}, observerOptions);
-
-// Observe all sections
-document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
 });
 
-// Add animation classes to elements
-document.querySelectorAll('.skill-card, .project-card, .certification-card, .experience-item').forEach(element => {
-    element.classList.add('fade-in');
+// Enhanced scroll-based navbar
+const navbar = document.querySelector('.navbar');
+let lastScrollTop = 0;
+
+window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Add/remove background based on scroll position
+    if (scrollTop > 50) {
+        navbar.style.background = '#ffffff';
+        navbar.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+    } else {
+        navbar.style.background = 'transparent';
+        navbar.style.boxShadow = 'none';
+    }
+    
+    // Hide/show navbar based on scroll direction
+    if (scrollTop > lastScrollTop && scrollTop > 500) {
+        navbar.style.transform = 'translateY(-100%)';
+    } else {
+        navbar.style.transform = 'translateY(0)';
+    }
+    
+    lastScrollTop = scrollTop;
 });
+
+// Add smooth transition to navbar
+navbar.style.transition = 'all 0.3s ease';
 
 // Mobile menu toggle
 const mobileMenuButton = document.createElement('button');
@@ -192,4 +546,21 @@ style.textContent = `
         transform: translateY(0);
     }
 `;
-document.head.appendChild(style); 
+document.head.appendChild(style);
+
+// Enhance hover animations
+document.querySelectorAll('.skill-card, .project-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        const icon = card.querySelector('i');
+        icon.style.animation = 'none';
+        icon.offsetHeight; // Trigger reflow
+        icon.style.animation = 'rotateIn 0.6s ease';
+    });
+});
+
+// Add parallax effect to hero section
+const hero = document.querySelector('.hero');
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    hero.style.backgroundPositionY = `${scrolled * 0.5}px`;
+}); 
