@@ -88,43 +88,92 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar background change on scroll
-const navbar = document.querySelector('.navbar');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.style.background = '#ffffff';
-        navbar.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
-    } else {
-        navbar.style.background = 'transparent';
-        navbar.style.boxShadow = 'none';
-    }
-});
-
-// Animate elements on scroll
+// Enhanced Intersection Observer options
 const observerOptions = {
     root: null,
     rootMargin: '0px',
     threshold: 0.1
 };
 
-const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate');
-            observer.unobserve(entry.target);
+// Create observers for different types of elements
+const createObserver = (elements, className = 'animate') => {
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add(className);
+                
+                // For grid containers, animate their children
+                if (entry.target.classList.contains('skills-grid') ||
+                    entry.target.classList.contains('certifications-grid') ||
+                    entry.target.classList.contains('project-grid')) {
+                    Array.from(entry.target.children).forEach((child, index) => {
+                        // Add a slight delay before adding the animate class
+                        setTimeout(() => {
+                            child.classList.add('animate');
+                        }, index * 100);
+                    });
+                }
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    elements.forEach(element => observer.observe(element));
+};
+
+// Initialize animations
+document.addEventListener('DOMContentLoaded', () => {
+    // ... existing configuration code ...
+
+    // Observe sections for animation
+    document.querySelectorAll('section').forEach(section => {
+        createObserver([section]);
+        
+        // Observe grid containers within sections
+        const grids = section.querySelectorAll('.skills-grid, .certifications-grid, .project-grid, .experience-timeline');
+        if (grids.length) {
+            grids.forEach(grid => {
+                createObserver([grid]);
+            });
+        }
+        
+        // Observe individual items
+        const items = section.querySelectorAll('.skill-card, .certification-card, .project-card, .experience-item');
+        if (items.length) {
+            createObserver(Array.from(items));
         }
     });
-}, observerOptions);
-
-// Observe all sections
-document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
 });
 
-// Add animation classes to elements
-document.querySelectorAll('.skill-card, .project-card, .certification-card, .experience-item').forEach(element => {
-    element.classList.add('fade-in');
+// Enhanced scroll-based navbar
+const navbar = document.querySelector('.navbar');
+let lastScrollTop = 0;
+
+window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Add/remove background based on scroll position
+    if (scrollTop > 50) {
+        navbar.style.background = '#ffffff';
+        navbar.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+    } else {
+        navbar.style.background = 'transparent';
+        navbar.style.boxShadow = 'none';
+    }
+    
+    // Hide/show navbar based on scroll direction
+    if (scrollTop > lastScrollTop && scrollTop > 500) {
+        navbar.style.transform = 'translateY(-100%)';
+    } else {
+        navbar.style.transform = 'translateY(0)';
+    }
+    
+    lastScrollTop = scrollTop;
 });
+
+// Add smooth transition to navbar
+navbar.style.transition = 'all 0.3s ease';
 
 // Mobile menu toggle
 const mobileMenuButton = document.createElement('button');
@@ -192,4 +241,21 @@ style.textContent = `
         transform: translateY(0);
     }
 `;
-document.head.appendChild(style); 
+document.head.appendChild(style);
+
+// Enhance hover animations
+document.querySelectorAll('.skill-card, .project-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        const icon = card.querySelector('i');
+        icon.style.animation = 'none';
+        icon.offsetHeight; // Trigger reflow
+        icon.style.animation = 'rotateIn 0.6s ease';
+    });
+});
+
+// Add parallax effect to hero section
+const hero = document.querySelector('.hero');
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    hero.style.backgroundPositionY = `${scrolled * 0.5}px`;
+}); 

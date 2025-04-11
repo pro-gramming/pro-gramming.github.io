@@ -389,4 +389,103 @@ footer {
     position: absolute;
     left: 0;
     top: 0;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes rotateIn {
+    0% {
+        transform: rotate(-180deg) scale(0.7);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Initial state for animated elements */
+.skill-card,
+.certification-card,
+.experience-item,
+.project-card {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* Animation classes */
+.animate {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Stagger delays for different sections */
+.skills-grid .skill-card.animate:nth-child(1) { animation-delay: 0.1s; }
+.skills-grid .skill-card.animate:nth-child(2) { animation-delay: 0.2s; }
+.skills-grid .skill-card.animate:nth-child(3) { animation-delay: 0.3s; }
+.skills-grid .skill-card.animate:nth-child(4) { animation-delay: 0.4s; }
+.skills-grid .skill-card.animate:nth-child(5) { animation-delay: 0.5s; }
+.skills-grid .skill-card.animate:nth-child(6) { animation-delay: 0.6s; }
+
+.certifications-grid .certification-card.animate:nth-child(1) { animation-delay: 0.1s; }
+.certifications-grid .certification-card.animate:nth-child(2) { animation-delay: 0.2s; }
+.certifications-grid .certification-card.animate:nth-child(3) { animation-delay: 0.3s; }
+.certifications-grid .certification-card.animate:nth-child(4) { animation-delay: 0.4s; }
+.certifications-grid .certification-card.animate:nth-child(5) { animation-delay: 0.5s; }
+.certifications-grid .certification-card.animate:nth-child(6) { animation-delay: 0.6s; }
+
+/* Hover effects */
+.skill-card:hover,
+.certification-card:hover,
+.project-card:hover,
+.experience-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.skill-card:hover i,
+.project-card:hover .project-icon i {
+    animation: rotateIn 0.6s ease;
+}
+
+/* Hero section animations */
+.hero-content h1,
+.hero-content .tagline,
+.hero-content .cta-buttons {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.hero-content h1 {
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.2s;
+}
+
+.hero-content .tagline {
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.4s;
+}
+
+.hero-content .cta-buttons {
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: 0.6s;
+}
+
+/* Section titles */
+section h2 {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+section.animate h2 {
+    animation: fadeInUp 0.6s ease forwards;
 } 
