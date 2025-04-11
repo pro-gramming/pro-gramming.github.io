@@ -11,32 +11,25 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-brand">Portfolio</div>
-        <button id="menu-toggle" class="menu-toggle">
-            <i class="fas fa-bars"></i>
-        </button>
         <ul class="nav-menu">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
-            <li><a href="#professional-highlights">Professional Highlights</a></li>
+            <li><a href="#certifications">Certifications</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
-        <button id="dark-mode-toggle" class="dark-mode-toggle">
-            <i class="fas fa-moon"></i>
-        </button>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1>
-                <span id="typing-text"></span>
-                <span class="highlight" id="name"></span>
-            </h1>
+            <h1>Hi, I'm <span class="highlight" id="name"></span></h1>
             <p class="tagline" id="tagline"></p>
             <div class="cta-buttons">
                 <a href="#contact" class="btn primary">Get in Touch</a>
-                <a href="#professional-highlights" class="btn secondary">View Professional Highlights</a>
+                <a href="#projects" class="btn secondary">View My Work</a>
             </div>
         </div>
     </section>
@@ -67,22 +60,35 @@
         </div>
     </section>
 
-    <!-- Professional Highlights Section -->
-    <section id="professional-highlights" class="professional-highlights">
-        <h2>Professional Highlights</h2>
-        <div class="highlights-grid" id="highlights-grid">
-            <!-- Projects will be populated by JavaScript -->
+    <!-- Certifications Section -->
+    <section id="certifications" class="certifications">
+        <h2>Certifications</h2>
+        <div class="certifications-grid" id="certifications-grid">
+            <!-- Certifications will be populated by JavaScript -->
         </div>
-        <div class="highlights-navigation">
-            <button class="highlights-nav-btn" id="prev-highlight">
+        <div class="certifications-navigation">
+            <button class="certifications-nav-btn" id="prev-cert">
                 <i class="fas fa-chevron-left"></i>
             </button>
-            <div class="highlights-dots" id="highlights-dots">
-                <!-- Dots will be populated by JavaScript -->
-            </div>
-            <button class="highlights-nav-btn" id="next-highlight">
+            <button class="certifications-nav-btn" id="next-cert">
                 <i class="fas fa-chevron-right"></i>
             </button>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <h2>Work Experience</h2>
+        <div class="experience-timeline" id="experience-timeline">
+            <!-- Experience will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <h2>My Projects</h2>
+        <div class="project-grid" id="project-grid">
+            <!-- Projects will be populated by JavaScript -->
         </div>
     </section>
 
@@ -95,10 +101,6 @@
                     <i class="fas fa-envelope"></i>
                     <a href="" id="email-link"></a>
                 </div>
-                <div class="contact-item">
-                    <i class="fab fa-linkedin"></i>
-                    <a href="" id="linkedin-link" target="_blank">LinkedIn Profile</a>
-                </div>
             </div>
         </div>
     </section>
@@ -109,6 +111,6 @@
     </footer>
 
     <script src="config.js"></script>
-    <script type="module" src="js/main.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
