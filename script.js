@@ -698,6 +698,6 @@ document.querySelectorAll('.skill-card, .project-card').forEach(card => {
 // Add parallax effect to hero section
 const hero = document.querySelector('.hero');
 window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
+    const scrolled = window.scrollY;
     hero.style.backgroundPositionY = `${scrolled * 0.5}px`;
-}); 
+});

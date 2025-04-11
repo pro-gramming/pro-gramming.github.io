@@ -959,27 +959,27 @@ section h2 {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-[data-theme="dark"] .skill-card.center {
+[data-theme="dark"] .skill-card.center,
+[data-theme="dark"] .highlight-card.center {
     background: #374151;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    z-index: 5;
 }
 
 [data-theme="dark"] .skill-card.left,
-[data-theme="dark"] .skill-card.right {
-    opacity: 0.9;
+[data-theme="dark"] .highlight-card.left,
+[data-theme="dark"] .skill-card.right,
+[data-theme="dark"] .highlight-card.right {
+    background: #1f2937;
+    z-index: 4;
 }
 
 [data-theme="dark"] .skill-card.far-left,
-[data-theme="dark"] .skill-card.far-right {
-    opacity: 0.8;
-}
-
-[data-theme="dark"] .skill-card h3 {
-    color: #f3f4f6;
-}
-
-[data-theme="dark"] .skill-card i {
-    color: #60a5fa;
+[data-theme="dark"] .highlight-card.far-left,
+[data-theme="dark"] .skill-card.far-right,
+[data-theme="dark"] .highlight-card.far-right {
+    background: #111827;
+    z-index: 3;
 }
 
 [data-theme="dark"] section:nth-child(even) {
@@ -993,4 +993,41 @@ section h2 {
 [data-theme="light"] .hero {
     background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
                 url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
+}
+
+[data-theme="light"] .skill-card,
+[data-theme="light"] .highlight-card,
+[data-theme="light"] .project-card {
+    background: #f8fafc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+[data-theme="light"] .skill-card.center,
+[data-theme="light"] .highlight-card.center {
+    background: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e2e8f0;
+    z-index: 5;
+}
+
+[data-theme="light"] .skill-card.left,
+[data-theme="light"] .highlight-card.left,
+[data-theme="light"] .skill-card.right,
+[data-theme="light"] .highlight-card.right {
+    background: #f1f5f9;
+    z-index: 4;
+}
+
+[data-theme="light"] .skill-card.far-left,
+[data-theme="light"] .highlight-card.far-left,
+[data-theme="light"] .skill-card.far-right,
+[data-theme="light"] .highlight-card.far-right {
+    background: #e2e8f0;
+    z-index: 3;
+}
+
+[data-theme="light"] .project-technology {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
 }
