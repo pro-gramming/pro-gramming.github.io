@@ -104,10 +104,18 @@ body {
 .hero-content h1 {
     font-size: 3.5rem;
     margin-bottom: 1rem;
+    display: inline-block;
+}
+
+#typing-text {
+    position: relative;
+    color: var(--text-color);
+    margin-right: 2px;
 }
 
 .highlight {
     color: var(--primary-color);
+    opacity: 0;
 }
 
 .tagline {
