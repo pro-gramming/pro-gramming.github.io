@@ -3,10 +3,14 @@ import { initTypingEffect } from './typingEffect.js';
 import { SkillsCarousel } from './skills.js';
 import { HighlightsCarousel } from './highlights.js';
 import { initAnimations } from './animations.js';
+import { initNavigation } from './navigation.js';
 
 // Initialize all components when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     const config = window.portfolioConfig;
+
+    // Initialize navigation
+    initNavigation();
 
     // Initialize dark mode
     initDarkMode();
